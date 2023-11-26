@@ -5,7 +5,11 @@
     <title>Counties Webapp</title>
     <link rel="stylesheet" href="node_modules/ol/ol.css" />
     <style>
-      .map {
+      #map {
+        width: 100%;
+        height: 50vh;
+      }
+      #ebird {
         width: 100%;
         height: 50vh;
       }
@@ -19,6 +23,7 @@
     <div id="map" class="map"></div>
     <!-- this gets used when there's a geolocation error -->
     <div id="info" style="display: none"></div>
+    <a id="ebird" href="" target="_new" style="display: none"></a>
 
     <script type="module" src="map.js"></script>
   </body>

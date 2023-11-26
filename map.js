@@ -13,14 +13,40 @@ import { ScaleLine, defaults as defaultControls } from "ol/control.js";
 import { polygonStyleFunction } from "./display.js";
 
 let currentCounty;
+const ebirdLinkEl = document.querySelector("#ebird");
+
+const getEbirdLifeListLink = function (county) {
+  return `https://ebird.org/lifelist/US-${county.STUSPS}-${county.COUNTYFP}?time=life&r=US-${county.STUSPS}-${county.COUNTYFP}&sortKey=taxon_order&o=asc`;
+};
+
+const setEbirdLink = function (county) {
+  const url = getEbirdLifeListLink(county);
+
+  ebirdLinkEl.href = url;
+  ebirdLinkEl.style.display = "inline";
+  ebirdLinkEl.innerText = `View eBird life list for ${county.NAMELSAD}`;
+};
+
+const resetEbirdLink = function () {
+  ebirdLinkEl.href = "";
+  ebirdLinkEl.style.display = "none";
+  ebirdLinkEl.innerText = "";
+};
 
 const getCurrentCounty = function (position) {
   console.log("getCurrentCounty");
   console.log(position);
 
-  currentCounty = countySource.getFeaturesAtCoordinate(position)[0];
+  currentCounty = countySource
+    .getFeaturesAtCoordinate(position)[0]
+    .getProperties();
 
-  console.log(currentCounty);
+  if (currentCounty) {
+    console.log(currentCounty);
+    setEbirdLink(currentCounty);
+  } else {
+    resetEbirdLink();
+  }
 };
 
 const view = new View({
