@@ -37,11 +37,11 @@ const getCurrentCounty = function (position) {
   console.log("getCurrentCounty");
   console.log(position);
 
-  currentCounty = countySource
-    .getFeaturesAtCoordinate(position)[0]
-    .getProperties();
+  const currentCountyFeature =
+    countySource.getFeaturesAtCoordinate(position)[0];
 
-  if (currentCounty) {
+  if (currentCountyFeature) {
+    currentCounty = currentCountyFeature.getProperties();
     console.log(currentCounty);
     setEbirdLink(currentCounty);
   } else {
@@ -56,7 +56,7 @@ const view = new View({
 
 const countySource = new VectorSource({
   format: new GeoJSON(),
-  url: "./data/counties-500k.geojson",
+  url: "./public/counties-500k.geojson",
 });
 
 const map = new Map({
