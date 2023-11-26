@@ -56,7 +56,7 @@ const view = new View({
 
 const countySource = new VectorSource({
   format: new GeoJSON(),
-  url: "./public/counties-500k.geojson",
+  url: "/counties-500k.geojson",
 });
 
 const map = new Map({
