@@ -14,24 +14,23 @@ import { polygonStyleFunction } from "./display.js";
 
 let currentCounty;
 
-const getCurrentCounty = function () {
-  // const position = geolocation.getPosition();
-  // console.log(positionFeature.getExtent())
-  // console.log(map.getView().fit(positionFeature, {
-  //   maxZoom: 18
-  // }));
-  const geometry = positionFeature.getGeometry();
-  console.log(geometry);
+const getCurrentCounty = function (position) {
+  console.log("getCurrentCounty");
+  console.log(position);
 
-  view.fit(geometry, {
-    duration: 1000,
-    maxZoom: 10,
-  });
+  currentCounty = countySource.getFeaturesAtCoordinate(position)[0];
+
+  console.log(currentCounty);
 };
 
 const view = new View({
-  center: [0, 0],
-  zoom: 2,
+  center: [-9388858, 3994544],
+  zoom: 4,
+});
+
+const countySource = new VectorSource({
+  format: new GeoJSON(),
+  url: "./data/counties-500k.geojson",
 });
 
 const map = new Map({
@@ -45,10 +44,7 @@ const map = new Map({
       source: new OSM(),
     }),
     new VectorLayer({
-      source: new VectorSource({
-        format: new GeoJSON(),
-        url: "./data/counties-500k.geojson",
-      }),
+      source: countySource,
       style: polygonStyleFunction,
     }),
   ],
@@ -81,14 +77,6 @@ geolocation.on("change", function () {
   console.log("change");
 });
 
-geolocation.on("change:position", function () {
-  console.log("change:position");
-  // TODO: for now, we'll only do this if there isn't yet a county, but eventually we'll want to do it more often
-  if (!currentCounty) {
-    getCurrentCounty();
-  }
-});
-
 // handle geolocation error.
 geolocation.on("error", function (error) {
   const info = document.getElementById("info");
@@ -118,8 +106,19 @@ positionFeature.setStyle(
 );
 
 geolocation.on("change:position", function () {
+  console.log("change:position");
   const coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
+  view.setCenter(coordinates);
+  view.setZoom(10); // TODO: later, only do this on first position
+
+  // TODO: for now, we'll only do this if there isn't yet a county, but eventually we'll want to do it more often
+  // track most recent county
+  // on each update, see if current location intersects that county
+  // if not, check all counties for an intersection
+  if (!currentCounty) {
+    getCurrentCounty(coordinates);
+  }
 });
 
 new VectorLayer({
