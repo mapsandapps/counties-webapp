@@ -157,18 +157,16 @@ positionFeature.setStyle(
 
 geolocation.on("change:position", function () {
   console.log("change:position");
+  const isInitialPosition = !positionFeature.getGeometry();
   const coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
-  view.setCenter(coordinates);
-  view.setZoom(10); // TODO: later, only do this on first position
 
-  // TODO: for now, we'll only do this if there isn't yet a county, but eventually we'll want to do it more often
-  // track most recent county
-  // on each update, see if current location intersects that county
-  // if not, check all counties for an intersection
-  if (!currentCounty) {
-    getCurrentCounty(coordinates);
+  if (isInitialPosition) {
+    view.setCenter(coordinates);
+    view.setZoom(10);
   }
+
+  getCurrentCounty(coordinates);
 });
 
 new VectorLayer({
