@@ -1,6 +1,6 @@
 import Overlay from "ol/Overlay.js";
 import { getEbirdLifeListLink, getEbirdTargetsLink } from "./ebird";
-import { getCountyAtCoordinate } from "./utils";
+import { currentMonthName, getCountyAtCoordinate } from "./utils";
 
 /**
  * Elements that make up the popup.
@@ -22,11 +22,13 @@ export const popupOverlay = new Overlay({
 });
 
 const getPopupHTML = (county) => {
-  return `${county.Name} County:<br><a href="${getEbirdLifeListLink(
+  return `<span class="nowrap">${
+    county.Name
+  } County:</span><br><a href="${getEbirdLifeListLink(
     county
-  )}" target="_new">Life list</a><br><a href="${getEbirdTargetsLink(
+  )}" class="nowrap" target="_new">Life list</a><br><a href="${getEbirdTargetsLink(
     county
-  )}" target="_new">Targets</a>`;
+  )}" class="nowrap" target="_new">Targets for ${currentMonthName}</a>`;
 };
 
 export const addClickHandler = (map) => {
