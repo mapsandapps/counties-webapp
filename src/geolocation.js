@@ -6,7 +6,7 @@ import { Vector as VectorLayer } from "ol/layer.js";
 import Point from "ol/geom/Point.js";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
-import { resetEbirdLinks, setEbirdLinks } from "./ebird";
+import { resetCurrentCountyLinks, setCurrentCountyLinks } from "./ebird";
 import { getCountyAtCoordinate } from "./utils";
 
 export const geolocate = (map, view) => {
@@ -37,9 +37,9 @@ export const geolocate = (map, view) => {
 
     if (currentCountyFeature) {
       currentCounty = currentCountyFeature.getProperties();
-      setEbirdLinks(currentCounty);
+      setCurrentCountyLinks(currentCounty);
     } else {
-      resetEbirdLinks();
+      resetCurrentCountyLinks();
     }
   };
 
