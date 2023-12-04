@@ -1,8 +1,6 @@
 import { currentMonth, currentMonthName } from "./utils";
 
 const ebirdLinksEl = document.querySelector("#ebird-links");
-const ebirdLifeLinkEl = document.querySelector("#ebird-life");
-const ebirdTargetsLinkEl = document.querySelector("#ebird-targets");
 
 export const getEbirdLifeListLink = function (county) {
   return `https://ebird.org/lifelist/US-${county.STUSPS}-${county.COUNTYFP}?time=life&r=US-${county.STUSPS}-${county.COUNTYFP}&sortKey=taxon_order&o=asc`;
@@ -18,19 +16,11 @@ export const setEbirdLinks = function (county) {
   const lifeListUrl = getEbirdLifeListLink(county);
   const targetsUrl = getEbirdTargetsLink(county);
 
-  ebirdLifeLinkEl.href = lifeListUrl;
-  ebirdLifeLinkEl.innerText = `Life list for ${county.NAMELSAD}`;
-
-  ebirdTargetsLinkEl.href = targetsUrl;
-  ebirdTargetsLinkEl.innerText = `Targets for ${county.NAMELSAD} for ${currentMonthName}`;
+  ebirdLinksEl.innerHTML = `You are in ${county.NAMELSAD}:<br /><a href="${lifeListUrl}" target="_new">eBird Life List</a><br /><a href="${targetsUrl}" target="_new">eBird Targets for ${currentMonthName}</a>`;
 };
 
 export const resetEbirdLinks = function () {
   ebirdLinksEl.style.display = "none";
 
-  ebirdLifeLinkEl.href = "";
-  ebirdLifeLinkEl.innerText = "";
-
-  ebirdTargetsLinkEl.href = "";
-  ebirdTargetsLinkEl.innerText = "";
+  ebirdLinksEl.innerHTML = "";
 };
