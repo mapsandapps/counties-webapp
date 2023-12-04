@@ -2,32 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Counties Webapp</title>
     <link rel="stylesheet" href="node_modules/ol/ol.css" />
     <style>
+      body {
+        font-size: 16px;
+        margin: 24px;
+      }
       #map {
         width: 100%;
         height: 100vh;
-        max-height: calc(100vh - 100px);
       }
-      #ebird {
-        width: 100%;
+      #ebird-links {
+        padding-bottom: 1em;
       }
       .locate {
-        top: 3.8em;
+        top: 5.3em;
         left: 0.5em;
       }
     </style>
   </head>
   <body>
-    <div id="map" class="map"></div>
-    <!-- this gets used when there's a geolocation error -->
-    <div id="info" style="display: none"></div>
     <div id="ebird-links" style="display: none">
       View on eBird:<br />
       <a id="ebird-life" href="" target="_new"></a><br />
       <a id="ebird-targets" href="" target="_new"></a>
     </div>
+    <div id="map" class="map"></div>
+    <!-- this gets used when there's a geolocation error -->
+    <div id="info" style="display: none"></div>
 
     <script type="module" src="src/map.js"></script>
   </body>
