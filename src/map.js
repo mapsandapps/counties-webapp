@@ -7,6 +7,7 @@ import { ScaleLine, defaults as defaultControls } from "ol/control.js";
 
 import { polygonStyleFunction } from "./display.js";
 import { geolocate } from "./geolocation.js";
+import { addClickHandler, popupOverlay } from "./onclick.js";
 
 const view = new View({
   center: [-9388858, 3994544],
@@ -34,8 +35,10 @@ const map = new Map({
       style: polygonStyleFunction,
     }),
   ],
+  overlays: [popupOverlay],
   target: "map",
   view: view,
 });
 
 geolocate(map, view);
+addClickHandler(map);

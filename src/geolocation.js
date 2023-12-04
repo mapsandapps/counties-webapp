@@ -7,6 +7,7 @@ import Point from "ol/geom/Point.js";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
 import { resetEbirdLinks, setEbirdLinks } from "./ebird";
+import { getCountyAtCoordinate } from "./utils";
 
 export const geolocate = (map, view) => {
   let currentCounty;
@@ -16,8 +17,6 @@ export const geolocate = (map, view) => {
   locate.innerHTML = '<button title="Locate me" id="track">◎</button>';
 
   const positionFeature = new Feature();
-  console.log("positionFeature");
-  console.log(positionFeature.getProperties());
   positionFeature.setStyle(
     new Style({
       image: new CircleStyle({
@@ -34,22 +33,10 @@ export const geolocate = (map, view) => {
   );
 
   const getCurrentCounty = function (position) {
-    console.log("getCurrentCounty");
-
-    let countySource;
-
-    map.getLayers().forEach((layer) => {
-      if (layer.getProperties().name === "counties") {
-        countySource = layer.getSource();
-      }
-    });
-
-    const currentCountyFeature =
-      countySource.getFeaturesAtCoordinate(position)[0];
+    const currentCountyFeature = getCountyAtCoordinate(map, position);
 
     if (currentCountyFeature) {
       currentCounty = currentCountyFeature.getProperties();
-      console.log(currentCounty);
       setEbirdLinks(currentCounty);
     } else {
       resetEbirdLinks();
