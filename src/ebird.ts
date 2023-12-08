@@ -1,6 +1,8 @@
 import { currentMonth, currentMonthName } from "./utils";
 
-const currentCountyLinksEl = document.querySelector("#current-county-links");
+const currentCountyLinksEl = document.querySelector<HTMLElement>(
+  "#current-county-links"
+);
 
 export const getEbirdLifeListLink = function (county) {
   return `https://ebird.org/lifelist/US-${county.STUSPS}-${county.COUNTYFP}?time=life&r=US-${county.STUSPS}-${county.COUNTYFP}&sortKey=taxon_order&o=asc`;
@@ -11,6 +13,8 @@ export const getEbirdTargetsLink = function (county) {
 };
 
 export const setCurrentCountyLinks = function (county) {
+  if (!currentCountyLinksEl) return;
+
   currentCountyLinksEl.style.display = "block";
 
   const lifeListUrl = getEbirdLifeListLink(county);
@@ -20,6 +24,8 @@ export const setCurrentCountyLinks = function (county) {
 };
 
 export const resetCurrentCountyLinks = function () {
+  if (!currentCountyLinksEl) return;
+
   currentCountyLinksEl.style.display = "none";
 
   currentCountyLinksEl.innerHTML = "";

@@ -62,6 +62,8 @@ export const geolocate = (map, view) => {
   // handle geolocation error.
   geolocation.on("error", function (error) {
     const info = document.getElementById("info");
+    if (!info) return;
+
     info.innerHTML = error.message;
     info.style.display = "";
   });

@@ -5,9 +5,9 @@ import { OSM, Vector as VectorSource } from "ol/source.js";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer.js";
 import { ScaleLine, defaults as defaultControls } from "ol/control.js";
 
-import { polygonStyleFunction } from "./display.js";
-import { geolocate } from "./geolocation.js";
-import { addClickHandler, popupOverlay } from "./onclick.js";
+import { polygonStyleFunction } from "./display";
+import { geolocate } from "./geolocation";
+import { addClickHandler, popupOverlay } from "./onclick";
 
 const view = new View({
   center: [-9388858, 3994544],
@@ -30,6 +30,7 @@ const map = new Map({
       source: new OSM(),
     }),
     new VectorLayer({
+      // @ts-ignore
       name: "counties",
       source: countySource,
       style: polygonStyleFunction,
