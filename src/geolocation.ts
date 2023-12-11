@@ -44,7 +44,13 @@ export const geolocate = (map, view) => {
   };
 
   locate.addEventListener("click", function () {
-    geolocation.setTracking(true);
+    // if tracking isn't on yet, start tracking
+    // otherwise, recenter the map
+    if (geolocation.getTracking()) {
+      centerAndZoom();
+    } else {
+      geolocation.setTracking(true);
+    }
   });
 
   const geolocation = new Geolocation({
@@ -73,6 +79,11 @@ export const geolocate = (map, view) => {
     accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
   });
 
+  const centerAndZoom = () => {
+    view.setCenter(geolocation.getPosition());
+    view.setZoom(10);
+  };
+
   geolocation.on("change:position", function () {
     console.log("change:position");
     const isInitialPosition = !positionFeature.getGeometry();
@@ -80,8 +91,7 @@ export const geolocate = (map, view) => {
     positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
 
     if (isInitialPosition) {
-      view.setCenter(coordinates);
-      view.setZoom(10);
+      centerAndZoom();
     }
 
     getCurrentCounty(coordinates);
