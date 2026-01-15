@@ -1,6 +1,7 @@
 import Overlay from "ol/Overlay.js";
 import { getEbirdLifeListLink, getEbirdTargetsLink } from "./ebird";
 import { currentMonthName, getCountyAtCoordinate } from "./utils";
+import { transform } from "ol/proj";
 
 /**
  * Elements that make up the popup.
@@ -21,14 +22,16 @@ export const popupOverlay = new Overlay({
   },
 });
 
-const getPopupHTML = (county) => {
+const getPopupHTML = (county, coordinate) => {
   return `<span class="nowrap">${
     county.Name
   } County:</span><br><a href="${getEbirdLifeListLink(
     county
   )}" class="nowrap" target="_new">Life list</a><br><a href="${getEbirdTargetsLink(
     county
-  )}" class="nowrap" target="_new">Targets for ${currentMonthName}</a>`;
+  )}" class="nowrap" target="_new">Targets for ${currentMonthName}</a><br />
+  ${coordinate[1].toFixed(4)},
+  ${coordinate[0].toFixed(4)}`;
 };
 
 export const addClickHandler = (map) => {
@@ -47,10 +50,11 @@ export const addClickHandler = (map) => {
    */
   map.on("singleclick", function (e) {
     const coordinate = e.coordinate;
+    const decimalCoordinate = transform(coordinate, "EPSG:3857", "EPSG:4326");
 
     const clickedCountyFeature = getCountyAtCoordinate(map, coordinate);
     const clickedCounty = clickedCountyFeature.getProperties();
-    content.innerHTML = getPopupHTML(clickedCounty);
+    content.innerHTML = getPopupHTML(clickedCounty, decimalCoordinate);
     popupOverlay.setPosition(coordinate);
   });
 };
